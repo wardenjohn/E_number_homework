@@ -50,11 +50,13 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../E_homework/main.cpp \
 		../E_homework/mainwindow.cpp \
-		../E_homework/enumber.cpp moc_mainwindow.cpp \
+		../E_homework/enumber.cpp qrc_qsrc.cpp \
+		moc_mainwindow.cpp \
 		moc_enumber.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		enumber.o \
+		qrc_qsrc.o \
 		moc_mainwindow.o \
 		moc_enumber.o
 DIST          = ../../../QT/5.8/clang_64/mkspecs/features/spec_pre.prf \
@@ -426,6 +428,7 @@ Makefile: ../E_homework/E_homework.pro ../../../QT/5.8/clang_64/mkspecs/macx-cla
 		../../../QT/5.8/clang_64/mkspecs/features/yacc.prf \
 		../../../QT/5.8/clang_64/mkspecs/features/lex.prf \
 		../E_homework/E_homework.pro \
+		../E_homework/qsrc.qrc \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/QtWidgets.prl \
 		../../../QT/5.8/clang_64/lib/QtGui.framework/QtGui.prl \
 		../../../QT/5.8/clang_64/lib/QtCore.framework/QtCore.prl
@@ -607,6 +610,7 @@ Makefile: ../E_homework/E_homework.pro ../../../QT/5.8/clang_64/mkspecs/macx-cla
 ../../../QT/5.8/clang_64/mkspecs/features/yacc.prf:
 ../../../QT/5.8/clang_64/mkspecs/features/lex.prf:
 ../E_homework/E_homework.pro:
+../E_homework/qsrc.qrc:
 ../../../QT/5.8/clang_64/lib/QtWidgets.framework/QtWidgets.prl:
 ../../../QT/5.8/clang_64/lib/QtGui.framework/QtGui.prl:
 ../../../QT/5.8/clang_64/lib/QtCore.framework/QtCore.prl:
@@ -639,6 +643,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+	$(COPY_FILE) --parents ../E_homework/qsrc.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../QT/5.8/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../E_homework/mainwindow.h ../E_homework/enumber.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../E_homework/main.cpp ../E_homework/mainwindow.cpp ../E_homework/enumber.cpp $(DISTDIR)/
@@ -666,8 +671,22 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all:
+compiler_rcc_make_all: qrc_qsrc.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) qrc_qsrc.cpp
+qrc_qsrc.cpp: ../E_homework/qsrc.qrc \
+		../../../QT/5.8/clang_64/bin/rcc \
+		../E_homework/element/3.png \
+		../E_homework/element/4.png \
+		../E_homework/element/5.png \
+		../E_homework/element/6.png \
+		../E_homework/element/7.png \
+		../E_homework/element/8.png \
+		../E_homework/element/blank.png \
+		../E_homework/element/1.png \
+		../E_homework/element/2.png
+	/Users/zhangyongde/QT/5.8/clang_64/bin/rcc -name qsrc ../E_homework/qsrc.qrc -o qrc_qsrc.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
@@ -715,7 +734,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -741,8 +760,13 @@ mainwindow.o: ../E_homework/mainwindow.cpp ../E_homework/mainwindow.h \
 enumber.o: ../E_homework/enumber.cpp ../E_homework/enumber.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		ui_enumber.h
+		ui_enumber.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QImage \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimage.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o enumber.o ../E_homework/enumber.cpp
+
+qrc_qsrc.o: qrc_qsrc.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qsrc.o qrc_qsrc.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

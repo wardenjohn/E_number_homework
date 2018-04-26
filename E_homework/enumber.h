@@ -14,12 +14,14 @@ class enumber : public QDialog
 public:
     explicit enumber(QWidget *parent = 0);
     ~enumber();
-
+    void init_pic();
+    void eight_number();
 private:
     Ui::enumber *ui;
-
+    std::vector<QImage> imgstack;
 public slots:
     void start();
+    void loadp();
 };
 
 #endif // ENUMBER_H

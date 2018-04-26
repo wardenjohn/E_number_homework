@@ -32,3 +32,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     enumber.ui
+
+RESOURCES += \
+    qsrc.qrc

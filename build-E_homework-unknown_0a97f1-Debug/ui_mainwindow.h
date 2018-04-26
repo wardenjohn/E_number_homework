@@ -32,6 +32,7 @@ public:
     QPushButton *eight_number;
     QPushButton *traveler;
     QLabel *declear;
+    QLabel *Unit;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -40,7 +41,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(528, 264);
+        MainWindow->resize(538, 283);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         title = new QLabel(centralWidget);
@@ -54,11 +55,14 @@ public:
         traveler->setGeometry(QRect(220, 80, 113, 32));
         declear = new QLabel(centralWidget);
         declear->setObjectName(QStringLiteral("declear"));
-        declear->setGeometry(QRect(50, 180, 441, 16));
+        declear->setGeometry(QRect(170, 190, 181, 20));
+        Unit = new QLabel(centralWidget);
+        Unit->setObjectName(QStringLiteral("Unit"));
+        Unit->setGeometry(QRect(120, 210, 281, 16));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 528, 22));
+        menuBar->setGeometry(QRect(0, 0, 538, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -78,7 +82,8 @@ public:
         title->setText(QApplication::translate("MainWindow", "\350\257\267\351\200\211\346\213\251\351\234\200\350\246\201\350\247\243\345\206\263\347\232\204\351\227\256\351\242\230\357\274\232", Q_NULLPTR));
         eight_number->setText(QApplication::translate("MainWindow", "\345\205\253\346\225\260\347\240\201\351\227\256\351\242\230", Q_NULLPTR));
         traveler->setText(QApplication::translate("MainWindow", "\346\227\205\350\241\214\345\256\266\351\227\256\351\242\230", Q_NULLPTR));
-        declear->setText(QApplication::translate("MainWindow", "CS1505 Wraden John \302\2512018 Beijing University Of Chemicial Technology", Q_NULLPTR));
+        declear->setText(QApplication::translate("MainWindow", "CS1505 Wraden John \302\2512018 ", Q_NULLPTR));
+        Unit->setText(QApplication::translate("MainWindow", "Beijing University Of Chemicial Technology", Q_NULLPTR));
     } // retranslateUi
 
 };
