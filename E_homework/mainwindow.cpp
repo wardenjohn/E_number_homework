@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::enter_eigth_number()
 {
-    enumber *numWin = new enumber();
+    numWin = new enumber();
     numWin->show();
 }
 

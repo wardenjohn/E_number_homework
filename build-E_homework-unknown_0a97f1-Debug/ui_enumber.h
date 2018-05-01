@@ -17,6 +17,8 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QTextBrowser>
 
 QT_BEGIN_NAMESPACE
 
@@ -39,12 +41,16 @@ public:
     QLabel *num21;
     QLabel *num12;
     QLabel *num22;
+    QRadioButton *deep_first;
+    QRadioButton *width_first;
+    QLabel *label;
+    QTextBrowser *textBrowser;
 
     void setupUi(QDialog *enumber)
     {
         if (enumber->objectName().isEmpty())
             enumber->setObjectName(QStringLiteral("enumber"));
-        enumber->resize(570, 503);
+        enumber->resize(551, 627);
         close = new QPushButton(enumber);
         close->setObjectName(QStringLiteral("close"));
         close->setGeometry(QRect(420, 20, 113, 32));
@@ -53,7 +59,7 @@ public:
         start->setGeometry(QRect(420, 60, 113, 32));
         num00 = new QLabel(enumber);
         num00->setObjectName(QStringLiteral("num00"));
-        num00->setGeometry(QRect(40, 90, 71, 81));
+        num00->setGeometry(QRect(80, 90, 71, 81));
         num00->setPixmap(QPixmap(QString::fromUtf8(":/image/1")));
         load = new QPushButton(enumber);
         load->setObjectName(QStringLiteral("load"));
@@ -64,7 +70,7 @@ public:
         num01->setPixmap(QPixmap(QString::fromUtf8(":/image/2")));
         num02 = new QLabel(enumber);
         num02->setObjectName(QStringLiteral("num02"));
-        num02->setGeometry(QRect(280, 90, 71, 81));
+        num02->setGeometry(QRect(240, 90, 71, 81));
         num02->setPixmap(QPixmap(QString::fromUtf8(":/image/3")));
         label_2 = new QLabel(enumber);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -80,11 +86,11 @@ public:
         label_5->setGeometry(QRect(10, 420, 411, 16));
         num10 = new QLabel(enumber);
         num10->setObjectName(QStringLiteral("num10"));
-        num10->setGeometry(QRect(40, 210, 71, 81));
+        num10->setGeometry(QRect(80, 210, 71, 81));
         num10->setPixmap(QPixmap(QString::fromUtf8(":/image/3")));
         num20 = new QLabel(enumber);
         num20->setObjectName(QStringLiteral("num20"));
-        num20->setGeometry(QRect(40, 330, 71, 81));
+        num20->setGeometry(QRect(80, 330, 71, 81));
         num20->setPixmap(QPixmap(QString::fromUtf8(":/image/0")));
         num11 = new QLabel(enumber);
         num11->setObjectName(QStringLiteral("num11"));
@@ -96,12 +102,24 @@ public:
         num21->setPixmap(QPixmap(QString::fromUtf8(":/image/7")));
         num12 = new QLabel(enumber);
         num12->setObjectName(QStringLiteral("num12"));
-        num12->setGeometry(QRect(280, 210, 71, 81));
+        num12->setGeometry(QRect(240, 210, 71, 81));
         num12->setPixmap(QPixmap(QString::fromUtf8(":/image/5")));
         num22 = new QLabel(enumber);
         num22->setObjectName(QStringLiteral("num22"));
-        num22->setGeometry(QRect(280, 330, 71, 81));
+        num22->setGeometry(QRect(240, 330, 71, 81));
         num22->setPixmap(QPixmap(QString::fromUtf8(":/image/8")));
+        deep_first = new QRadioButton(enumber);
+        deep_first->setObjectName(QStringLiteral("deep_first"));
+        deep_first->setGeometry(QRect(430, 150, 100, 20));
+        width_first = new QRadioButton(enumber);
+        width_first->setObjectName(QStringLiteral("width_first"));
+        width_first->setGeometry(QRect(430, 180, 100, 20));
+        label = new QLabel(enumber);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(10, 450, 81, 16));
+        textBrowser = new QTextBrowser(enumber);
+        textBrowser->setObjectName(QStringLiteral("textBrowser"));
+        textBrowser->setGeometry(QRect(10, 470, 411, 141));
 
         retranslateUi(enumber);
 
@@ -127,6 +145,9 @@ public:
         num21->setText(QString());
         num12->setText(QString());
         num22->setText(QString());
+        deep_first->setText(QApplication::translate("enumber", "\346\267\261\345\272\246\344\274\230\345\205\210\346\220\234\347\264\242", Q_NULLPTR));
+        width_first->setText(QApplication::translate("enumber", "\345\271\277\345\272\246\344\274\230\345\205\210\346\220\234\347\264\242", Q_NULLPTR));
+        label->setText(QApplication::translate("enumber", "\350\257\246\347\273\206\350\276\223\345\207\272\357\274\232", Q_NULLPTR));
     } // retranslateUi
 
 };

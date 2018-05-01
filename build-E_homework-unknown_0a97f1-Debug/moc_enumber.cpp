@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_enumber_t {
-    QByteArrayData data[4];
-    char stringdata0[21];
+    QByteArrayData data[6];
+    char stringdata0[29];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,10 +34,12 @@ static const qt_meta_stringdata_enumber_t qt_meta_stringdata_enumber = {
 QT_MOC_LITERAL(0, 0, 7), // "enumber"
 QT_MOC_LITERAL(1, 8, 5), // "start"
 QT_MOC_LITERAL(2, 14, 0), // ""
-QT_MOC_LITERAL(3, 15, 5) // "loadp"
+QT_MOC_LITERAL(3, 15, 5), // "loadp"
+QT_MOC_LITERAL(4, 21, 5), // "node*"
+QT_MOC_LITERAL(5, 27, 1) // "n"
 
     },
-    "enumber\0start\0\0loadp"
+    "enumber\0start\0\0loadp\0node*\0n"
 };
 #undef QT_MOC_LITERAL
 
@@ -56,11 +58,11 @@ static const uint qt_meta_data_enumber[] = {
 
  // slots: name, argc, parameters, tag, flags
        1,    0,   24,    2, 0x0a /* Public */,
-       3,    0,   25,    2, 0x0a /* Public */,
+       3,    1,   25,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 4,    5,
 
        0        // eod
 };
@@ -72,11 +74,10 @@ void enumber::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, voi
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->start(); break;
-        case 1: _t->loadp(); break;
+        case 1: _t->loadp((*reinterpret_cast< node*(*)>(_a[1]))); break;
         default: ;
         }
     }
-    Q_UNUSED(_a);
 }
 
 const QMetaObject enumber::staticMetaObject = {

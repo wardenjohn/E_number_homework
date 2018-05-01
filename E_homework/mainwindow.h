@@ -18,7 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-
+    enumber *numWin;
 public slots:
     void enter_eigth_number();
     void enter_traveler();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>570</width>
-    <height>503</height>
+    <width>551</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,7 +42,7 @@
   <widget class="QLabel" name="num00">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>80</x>
      <y>90</y>
      <width>71</width>
      <height>81</height>
@@ -87,7 +87,7 @@
   <widget class="QLabel" name="num02">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>240</x>
      <y>90</y>
      <width>71</width>
      <height>81</height>
@@ -155,7 +155,7 @@
   <widget class="QLabel" name="num10">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>80</x>
      <y>210</y>
      <width>71</width>
      <height>81</height>
@@ -171,7 +171,7 @@
   <widget class="QLabel" name="num20">
    <property name="geometry">
     <rect>
-     <x>40</x>
+     <x>80</x>
      <y>330</y>
      <width>71</width>
      <height>81</height>
@@ -219,7 +219,7 @@
   <widget class="QLabel" name="num12">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>240</x>
      <y>210</y>
      <width>71</width>
      <height>81</height>
@@ -235,7 +235,7 @@
   <widget class="QLabel" name="num22">
    <property name="geometry">
     <rect>
-     <x>280</x>
+     <x>240</x>
      <y>330</y>
      <width>71</width>
      <height>81</height>
@@ -246,6 +246,55 @@
    </property>
    <property name="pixmap">
     <pixmap resource="qsrc.qrc">:/image/8</pixmap>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="deep_first">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>150</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>深度优先搜索</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="width_first">
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>180</y>
+     <width>100</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>广度优先搜索</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>450</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>详细输出：</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>470</y>
+     <width>411</width>
+     <height>141</height>
+    </rect>
    </property>
   </widget>
  </widget>
