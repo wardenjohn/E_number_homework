@@ -8,16 +8,17 @@
 #define LEFT 2
 #define RIGHT 3
 #define DOWN 4
-enumber::enumber(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::enumber)
-{
-    ui->setupUi(this);
-    setWindowTitle("小小八数码");
-    connect(ui->close,SIGNAL(clicked(bool)),this,SLOT(close()));
-    connect(ui->start,SIGNAL(clicked(bool)),this,SLOT(start()));
-    connect(ui->load,SIGNAL(clicked(bool)),this,SLOT(loadp()));
-}
+#define MAX_DEPT 5
+    enumber::enumber(QWidget *parent) :
+        QDialog(parent),
+        ui(new Ui::enumber)
+    {
+        ui->setupUi(this);
+        setWindowTitle("小小八数码");
+        connect(ui->close,SIGNAL(clicked(bool)),this,SLOT(close()));
+        connect(ui->start,SIGNAL(clicked(bool)),this,SLOT(start()));
+        connect(ui->load,SIGNAL(clicked(bool)),this,SLOT(loadp()));
+    }
 
 //initial the picture
 void enumber::init_pic()
@@ -43,6 +44,10 @@ void enumber::init_pic()
     imgstack.push_back(*ice);
 
     //loadp(open[0]);
+}
+
+void enumber::init(){
+
 }
 
 void enumber::start()
@@ -94,19 +99,59 @@ void enumber::start()
 
 void enumber::run_deep()
 {
-    std::cout<<"run deep"<<std::endl;
-    int i=0;
-    std::string text="heheheheheheheh";
-    while(i<1000){
-        text.append(text);
-        ui->textBrowser->setText(QString::fromStdString(text));
-        i++;
-        std::cout<<i<<std::endl;
+    open.clear();
+    closed.clear();
+    ans.clear();
+    count=0;
+    pos_closed=-1;
+    check=0;
+    //initial all the parameters
+    init_deep();
+    int flag=0;
+    while((flag = move_deep()) == 0);
+
+    if(flag == 1){
+        node *p = open.back();
+        while(p->parent!=0){
+            ans.push_back(p);
+            p=closed[p->parent];
+        }
+        ans.push_back(p);
+    }
+
+    for(int i=ans.size()-1;i>=0;i--){
+        for(int j=0;j<NUM_UNIT;j++){
+            if(j%3==0)
+                std::cout<<std::endl;
+            std::cout<<ans[i]->disk[j/3][j%3]<<" ";
+        }
+        std::cout<<std::endl;
+    }
+    QTime t;
+    std::string s;
+    for(int i=ans.size()-1;i>=0;i--){
+        t.start();
+        for(int j=0;j<NUM_UNIT;j++){
+            if(j%3==0)
+                s+='\n';
+            s+=(ans[i]->disk[j/3][j%3]+'0');
+            s+=' ';
+        }
+        std::cout<<"outside"<<std::endl;
+        std::cout<<std::endl;
+        s+='\n';
+        loadp(ans[i]);
+        ui->textBrowser->setText(QString::fromStdString(s));
+        while(t.elapsed()<1000)
+            QCoreApplication::processEvents();
     }
 }
 
 void enumber::run_width()
 {
+    open.clear();
+    closed.clear();
+    ans.clear();
 
     int flag=0;
     while((flag=move()) == 0);
@@ -153,10 +198,6 @@ void enumber::run_width()
                 QCoreApplication::processEvents();
         }
     }
-
-    open.clear();
-    closed.clear();
-    ans.clear();
 }
 
 void enumber::eight_number()
@@ -193,7 +234,7 @@ enumber::~enumber()
 }
 
 
-////////////////////The actual function in running a algorithm //////////////////
+////////////////////Width Search First //////////////////
 bool enumber::isEnd(node *n)
 {
     std::string end = "123804765";
@@ -418,3 +459,309 @@ void enumber::print()
 
 //same chech is end
 //same in finding zero
+void enumber::creat_targ(node *n)
+{
+    n->targ.clear();
+    for(int i=0;i<NUM_UNIT;i++){
+        n->targ += n->disk[i/3][i%3] + '0';
+    }
+}
+
+bool enumber::inClosed(node *n)
+{
+    for(int i=0;i<closed.size();i++){
+        if(strcmp(n->targ.c_str(), closed[i]->targ.c_str()) == 0){
+            check++;
+            return true;
+        }
+    }
+    return false;
+}
+
+void enumber::init_deep()
+{
+    node *first = new node();
+    first->disk[0][0] = 2;
+    first->disk[0][1] = 8;
+    first->disk[0][2] = 3;
+    first->disk[1][0] = 1;
+    first->disk[1][1] = 4;
+    first->disk[1][2] = 0;
+    first->disk[2][0] = 7;
+    first->disk[2][1] = 6;
+    first->disk[2][2] = 5;
+
+    first->parent=-1;
+    first->dir=-1;
+    first->dept=0;
+
+    open.push_back(first);
+}
+
+int enumber::move_deep()
+{
+    if(open.empty()){
+        return -1;
+    }//If open list is null
+
+    node *now = new node();
+    for(int i=0;i<NUM_UNIT;i++)
+        now->disk[i/3][i%3] = open.back()->disk[i/3][i%3];//copy into node
+
+    now->dir = open.back()->dir;
+    now->parent=open.back()->parent;
+    now->dept=open.back()->dept;
+    now->targ = open.back()->targ;
+
+    closed.push_back(open.back());//把pop出去的那个放入close表中
+    open.pop_back();//把尾部删去，相当于是删去open的头，open是反过来看的，把vector的尾部看成open的头
+    pos_closed++;
+    if(now->dept>=MAX_DEPT){//if it is out of the max dept,no longer create its child state
+        return 0;
+    }
+
+    int from = now->dir;
+    int pos = findZero(now);
+    int x=pos/3;
+    int y=pos%3;
+
+    //移过来的那个方向就不要移回去了,
+    if(from == UP){//从上移下来的
+        node *p = new node();
+        *p=*now;
+        if(y-1>=0){
+            int temp = p->disk[x][y-1];
+            p->disk[x][y-1] = 0;
+            p->disk[x][y] = temp;
+            p->dir=RIGHT;
+            p->dept++;
+            p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+            if(isEnd(p))
+                return 1;
+        }//左移
+        p = new node();
+        *p=*now;
+        if(y+1<3){
+            int temp=p->disk[x][y+1];
+            p->disk[x][y+1] = 0;
+            p->disk[x][y]=temp;
+            p->dir=LEFT;
+            p->dept++;
+            p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+            if(isEnd(p))
+                return 1;
+        }//右移
+        p=new node();
+        *p=*now;
+        if(x+1<3){
+            int temp =p->disk[x+1][y];
+            p->disk[x+1][y]=0;
+            p->disk[x][y]=temp;
+            p->dir=UP;
+            p->dept++;
+            p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//下移
+    }else if(from == LEFT){
+        node *p=new node();
+        *p=*now;
+        if(x-1>=0){
+            int temp = p->disk[x-1][y];
+            p->disk[x-1][y]=0;
+            p->disk[x][y]=temp;
+            p->dir=DOWN;
+            p->dept++;
+            p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//上移
+        p=new node();
+        *p=*now;
+        if(x+1<3){
+            int temp=p->disk[x+1][y];
+            p->disk[x+1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=UP;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//下移
+        p=new node();
+        *p=*now;
+        if(y+1<3){
+            int temp=p->disk[x][y+1];
+            p->disk[x][y+1]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=LEFT;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//右移
+    }else if(from == RIGHT){
+        node *p = new node();
+        *p=*now;
+        if(x-1>=0){
+            int temp=p->disk[x-1][y];
+            p->disk[x-1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=DOWN;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//上移
+        p=new node();
+        *p=*now;
+        if(x+1<3){
+            int temp=p->disk[x+1][y];
+            p->disk[x+1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=UP;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//下移
+        p=new node();
+        *p=*now;
+        if(y-1>=0){
+            int temp=p->disk[x][y-1];
+            p->disk[x][y-1]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=RIGHT;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//左移
+    }else if(from == DOWN){
+        node *p=new node();
+        *p=*now;
+        if(x-1>=0){
+            int temp=p->disk[x-1][y];
+            p->disk[x-1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=DOWN;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//上移
+        p=new node();
+        *p=*now;
+        if(x+1<3){
+            int temp=p->disk[x+1][y];
+            p->disk[x+1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=UP;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//下移
+        p=new node();
+        *p=*now;
+        if(y-1>=0){
+            int temp=p->disk[x][y-1];
+            p->disk[x][y-1]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=RIGHT;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//左移
+    }else{//四个方向都需要移
+        node *p=new node();
+        *p=*now;
+        if(x-1>=0){
+            int temp=p->disk[x-1][y];
+            p->disk[x-1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=DOWN;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//上移
+        p=new node();
+        *p=*now;
+        if(x+1<3){
+            int temp=p->disk[x+1][y];
+            p->disk[x+1][y]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=UP;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//下移
+        p=new node();
+        *p=*now;
+        if(y-1>=0){
+            int temp=p->disk[x][y-1];
+            p->disk[x][y-1]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=RIGHT;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//左移
+        p=new node();
+        *p=*now;
+        if(y+1<3){
+            int temp=p->disk[x][y+1];
+            p->disk[x][y+1]=0;
+            p->disk[x][y]=temp;p->dept++;
+            p->dir=LEFT;p->parent=pos_closed;
+            creat_targ(p);
+            if(!inClosed(p))
+                open.push_back(p);
+
+            if(isEnd(p))
+                return 1;
+        }//右移
+    }
+    return 0;
+}
+

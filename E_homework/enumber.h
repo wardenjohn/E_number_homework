@@ -15,6 +15,8 @@ typedef struct node{
     int disk[3][3];
     int parent;
     int dir;
+    int dept;
+    std::string targ;
 }node;
 
 
@@ -31,6 +33,7 @@ public:
     void run_width();
     int count=0;
     int pos_closed=0;
+    int check=0;//to record how many is the same as one in the close table
 private:
     Ui::enumber *ui;
     std::vector<QImage> imgstack;
@@ -43,13 +46,17 @@ private:
 public slots:
     void start();
     void loadp(node *n);
-
 public:
     bool isEnd(node *n);
     int findZero(node *n);
     int move();
     void init();
     void print();
+//deep search
+    void init_deep();
+    int move_deep();
+    void creat_targ(node *n);
+    bool inClosed(node *n);
 };
 
 #endif // ENUMBER_H

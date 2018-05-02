@@ -41,7 +41,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(538, 283);
+        MainWindow->resize(538, 248);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         title = new QLabel(centralWidget);
@@ -55,10 +55,10 @@ public:
         traveler->setGeometry(QRect(220, 80, 113, 32));
         declear = new QLabel(centralWidget);
         declear->setObjectName(QStringLiteral("declear"));
-        declear->setGeometry(QRect(170, 190, 181, 20));
+        declear->setGeometry(QRect(170, 140, 181, 20));
         Unit = new QLabel(centralWidget);
         Unit->setObjectName(QStringLiteral("Unit"));
-        Unit->setGeometry(QRect(120, 210, 281, 16));
+        Unit->setGeometry(QRect(130, 170, 281, 16));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));

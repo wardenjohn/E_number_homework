@@ -45,6 +45,7 @@ public:
     QRadioButton *width_first;
     QLabel *label;
     QTextBrowser *textBrowser;
+    QRadioButton *radioButton;
 
     void setupUi(QDialog *enumber)
     {
@@ -120,6 +121,9 @@ public:
         textBrowser = new QTextBrowser(enumber);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
         textBrowser->setGeometry(QRect(10, 470, 411, 141));
+        radioButton = new QRadioButton(enumber);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+        radioButton->setGeometry(QRect(430, 210, 100, 20));
 
         retranslateUi(enumber);
 
@@ -148,6 +152,7 @@ public:
         deep_first->setText(QApplication::translate("enumber", "\346\267\261\345\272\246\344\274\230\345\205\210\346\220\234\347\264\242", Q_NULLPTR));
         width_first->setText(QApplication::translate("enumber", "\345\271\277\345\272\246\344\274\230\345\205\210\346\220\234\347\264\242", Q_NULLPTR));
         label->setText(QApplication::translate("enumber", "\350\257\246\347\273\206\350\276\223\345\207\272\357\274\232", Q_NULLPTR));
+        radioButton->setText(QApplication::translate("enumber", "A*\347\256\227\346\263\225", Q_NULLPTR));
     } // retranslateUi
 
 };
