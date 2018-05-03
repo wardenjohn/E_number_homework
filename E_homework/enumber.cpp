@@ -8,7 +8,8 @@
 #define LEFT 2
 #define RIGHT 3
 #define DOWN 4
-#define MAX_DEPT 5
+#define MAX_DEPT 25
+#define WAIT 1000
     enumber::enumber(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::enumber)
@@ -47,7 +48,22 @@ void enumber::init_pic()
 }
 
 void enumber::init(){
-
+    //desk[0]=2;desk[1]=8;desk[2]=3;desk[3]=1;desk[4]=6;desk[5]=4;desk[6]=7;desk[7]=0;desk[8]=5;
+    //initial the first disk,which is the initial status of the running,giving the first status in randomly
+    open.clear();
+    closed.clear();
+    ans.clear();
+    int count=0;
+    int pos_closed=0;
+    int check=0;
+    node first;
+    for(int i=0;i<9;i++){
+        first.disk[i/3][i%3] = desk[i];
+    }
+    first.dir=-1;
+    first.parent=-1;
+    open.push_back(&first);
+    loadp(open.back());
 }
 
 void enumber::start()
@@ -61,34 +77,40 @@ void enumber::start()
         flags[i]=0;
     }
 
-//    int count=0;
-//    while(count<9){
-//        int tem = rand()%9;
-//        if(flags[tem] == 0){//it means that this number is not been created
-//            flags[tem]=1;
-//            if(desk[count] == -1){
-//                desk[count]=tem;
-//                count++;
-//            }
-//        }
-//    }
-    desk[0]=2;desk[1]=8;desk[2]=3;desk[3]=1;desk[4]=6;desk[5]=4;desk[6]=7;desk[7]=0;desk[8]=5;
-    //initial the first disk,which is the initial status of the running,giving the first status in randomly
-
-    node first;
-    for(int i=0;i<9;i++){
-        first.disk[i/3][i%3] = desk[i];
+    int count_flag=0;//这个为产生的数所放的位置
+    flags[5]=1;flags[6]=1;flags[7]=1;
+    desk[6]=7;desk[7]=6;desk[8]=5;
+    while(count_flag<5){
+        int tem = rand()%5;
+        if(flags[tem] == 0){//it means that this number is not been created
+            flags[tem]=1;
+            if(desk[count_flag] == -1){
+                desk[count_flag]=tem;
+                count_flag++;
+            }
+        }
+        std::cout<<count_flag<<std::endl;
     }
-    first.dir=-1;
-    first.parent=-1;
-    open.push_back(&first);
+    desk[count_flag]=8;
+//    desk[0]=2;desk[1]=8;desk[2]=3;desk[3]=1;desk[4]=6;desk[5]=4;desk[6]=7;desk[7]=0;desk[8]=5;
+//    //initial the first disk,which is the initial status of the running,giving the first status in randomly
+
+//    node first;
+//    for(int i=0;i<9;i++){
+//        first.disk[i/3][i%3] = desk[i];
+//    }
+//    first.dir=-1;
+//    first.parent=-1;
+//    open.push_back(&first);
     //初始化S，并且把方向设为-1，加入表中
+
     init_pic();//put the picture into a list
-    loadp(&first);
     if(ui->deep_first->isChecked()){
+        show_terminal.clear();
         run_deep();
     }
     else if(ui->width_first->isChecked()){
+        show_terminal.clear();
         run_width();
     }
     else{
@@ -99,17 +121,11 @@ void enumber::start()
 
 void enumber::run_deep()
 {
-    open.clear();
-    closed.clear();
-    ans.clear();
-    count=0;
-    pos_closed=-1;
-    check=0;
     //initial all the parameters
     init_deep();
     int flag=0;
     while((flag = move_deep()) == 0);
-
+    std::cout<<flag<<std::endl;
     if(flag == 1){
         node *p = open.back();
         while(p->parent!=0){
@@ -119,40 +135,47 @@ void enumber::run_deep()
         ans.push_back(p);
     }
 
-    for(int i=ans.size()-1;i>=0;i--){
-        for(int j=0;j<NUM_UNIT;j++){
-            if(j%3==0)
-                std::cout<<std::endl;
-            std::cout<<ans[i]->disk[j/3][j%3]<<" ";
-        }
-        std::cout<<std::endl;
+    if(flag == -1){
+        show_terminal += "\nNo Answer!";
+        ui->textBrowser->setText(QString::fromStdString(show_terminal));
     }
-    QTime t;
-    std::string s;
-    for(int i=ans.size()-1;i>=0;i--){
-        t.start();
-        for(int j=0;j<NUM_UNIT;j++){
-            if(j%3==0)
-                s+='\n';
-            s+=(ans[i]->disk[j/3][j%3]+'0');
-            s+=' ';
+    else if(flag == 2){
+        show_terminal+="\nToo Larg";
+        ui->textBrowser->setText(QString::fromStdString(show_terminal));
+    }else{
+        for(int i=ans.size()-1;i>=0;i--){
+            for(int j=0;j<NUM_UNIT;j++){
+                if(j%3==0)
+                    std::cout<<std::endl;
+                std::cout<<ans[i]->disk[j/3][j%3]<<" ";
+            }
+            std::cout<<std::endl;
         }
-        std::cout<<"outside"<<std::endl;
-        std::cout<<std::endl;
-        s+='\n';
-        loadp(ans[i]);
-        ui->textBrowser->setText(QString::fromStdString(s));
-        while(t.elapsed()<1000)
-            QCoreApplication::processEvents();
+        QTime t;
+        show_terminal += "-------start showing --------";
+        for(int i=ans.size()-1;i>=0;i--){
+            t.start();
+            for(int j=0;j<NUM_UNIT;j++){
+                if(j%3==0)
+                    show_terminal+='\n';
+                show_terminal+=(ans[i]->disk[j/3][j%3]+'0');
+                show_terminal+=' ';
+            }
+            std::cout<<"outside"<<std::endl;
+            std::cout<<std::endl;
+            show_terminal+='\n';
+            loadp(ans[i]);
+            ui->textBrowser->setText(QString::fromStdString(show_terminal));
+            while(t.elapsed()<1000)
+                QCoreApplication::processEvents();
+        }
     }
+
 }
 
 void enumber::run_width()
 {
-    open.clear();
-    closed.clear();
-    ans.clear();
-
+    init();
     int flag=0;
     while((flag=move()) == 0);
     std::cout<<flag<<std::endl;
@@ -164,12 +187,12 @@ void enumber::run_width()
         ans.push_back(open.front());
         node *p=ans.front();
 
-        while(p->dir != -1){
+        while(p->parent != 0){
             p=closed[p->parent];
             ans.push_back(p);
         }
         std::cout<<ans.size()<<std::endl;
-
+        std::cout<<"hi"<<std::endl;
         for(int i=ans.size()-2;i>=0;i--){
                 for(int j=0;j<NUM_UNIT;j++){
                     if(j%3==0)
@@ -267,6 +290,14 @@ int enumber::move()
         now->disk[i/3][i%3] = open[0]->disk[i/3][i%3];
     now->dir = open[0]->dir;
     now->parent=open[0]->parent;
+
+    for(int i=0;i<NUM_UNIT;i++){
+        if(i%3==0)
+            show_terminal+='\n';
+        show_terminal+=now->disk[i/3][i%3]+'0';
+        show_terminal+=' ';
+    }
+    show_terminal+='\n';
 
     if(isEnd(now)){
         for(int i=0;i<NUM_UNIT;i++){
@@ -385,13 +416,13 @@ int enumber::move()
         }//上移
         p=new node();
         *p=*now;
-        if(x+1<3){
-            int temp=p->disk[x+1][y];
-            p->disk[x+1][y]=0;
+        if(y+1<3){
+            int temp=p->disk[x][y+1];
+            p->disk[x][y+1]=0;
             p->disk[x][y]=temp;
             p->dir=UP;p->parent=pos_closed;
             open.push_back(p);
-        }//下移
+        }//右移
         p=new node();
         *p=*now;
         if(y-1>=0){
@@ -480,30 +511,46 @@ bool enumber::inClosed(node *n)
 
 void enumber::init_deep()
 {
+    open.clear();
+    closed.clear();
+    ans.clear();
+    count=0;
+    pos_closed=0;
+    check=0;
+    show_terminal.clear();
     node *first = new node();
-    first->disk[0][0] = 2;
-    first->disk[0][1] = 8;
-    first->disk[0][2] = 3;
-    first->disk[1][0] = 1;
-    first->disk[1][1] = 4;
-    first->disk[1][2] = 0;
-    first->disk[2][0] = 7;
-    first->disk[2][1] = 6;
-    first->disk[2][2] = 5;
+//    first->disk[0][0] = 1;
+//    first->disk[0][1] = 2;
+//    first->disk[0][2] = 3;
+//    first->disk[1][0] = 7;
+//    first->disk[1][1] = 8;
+//    first->disk[1][2] = 4;
+//    first->disk[2][0] = 6;
+//    first->disk[2][1] = 5;
+//    first->disk[2][2] = 0;
+    for(int i=0;i<NUM_UNIT;i++)
+        first->disk[i/3][i%3] = desk[i];
 
+    for(int i=0;i<NUM_UNIT;i++)
+        std::cout<<first->disk[i/3][i%3]<<" ";
     first->parent=-1;
     first->dir=-1;
     first->dept=0;
 
     open.push_back(first);
+    loadp(first);
+    QTime t;
+    t.start();
+    while(t.elapsed()<WAIT)
+        QCoreApplication::processEvents();
 }
 
 int enumber::move_deep()
 {
     if(open.empty()){
+        std::cout<<"open is null"<<std::endl;
         return -1;
     }//If open list is null
-
     node *now = new node();
     for(int i=0;i<NUM_UNIT;i++)
         now->disk[i/3][i%3] = open.back()->disk[i/3][i%3];//copy into node
@@ -513,10 +560,19 @@ int enumber::move_deep()
     now->dept=open.back()->dept;
     now->targ = open.back()->targ;
 
-    closed.push_back(open.back());//把pop出去的那个放入close表中
+    for(int i=0;i<NUM_UNIT;i++){
+        if(i%3==0)
+            show_terminal+='\n';
+        show_terminal+=now->disk[i/3][i%3]+'0';
+        show_terminal+=' ';
+    }
+    show_terminal+='\n';
+
+    closed.push_back(now);//把pop出去的那个放入close表中
     open.pop_back();//把尾部删去，相当于是删去open的头，open是反过来看的，把vector的尾部看成open的头
-    pos_closed++;
+
     if(now->dept>=MAX_DEPT){//if it is out of the max dept,no longer create its child state
+        pos_closed++;
         return 0;
     }
 
@@ -678,18 +734,18 @@ int enumber::move_deep()
         }//上移
         p=new node();
         *p=*now;
-        if(x+1<3){
-            int temp=p->disk[x+1][y];
-            p->disk[x+1][y]=0;
+        if(y+1<3){
+            int temp=p->disk[x][y+1];
+            p->disk[x][y+1]=0;
             p->disk[x][y]=temp;p->dept++;
-            p->dir=UP;p->parent=pos_closed;
+            p->dir=LEFT;p->parent=pos_closed;
             creat_targ(p);
             if(!inClosed(p))
                 open.push_back(p);
 
             if(isEnd(p))
                 return 1;
-        }//下移
+        }//右移
         p=new node();
         *p=*now;
         if(y-1>=0){
@@ -762,6 +818,7 @@ int enumber::move_deep()
                 return 1;
         }//右移
     }
+    pos_closed++;
     return 0;
 }
 
