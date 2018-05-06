@@ -50,12 +50,14 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../E_homework/main.cpp \
 		../E_homework/mainwindow.cpp \
-		../E_homework/enumber.cpp qrc_qsrc.cpp \
+		../E_homework/enumber.cpp \
+		../E_homework/a_star.cpp qrc_qsrc.cpp \
 		moc_mainwindow.cpp \
 		moc_enumber.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		enumber.o \
+		a_star.o \
 		qrc_qsrc.o \
 		moc_mainwindow.o \
 		moc_enumber.o
@@ -238,7 +240,8 @@ DIST          = ../../../QT/5.8/clang_64/mkspecs/features/spec_pre.prf \
 		../E_homework/E_homework.pro ../E_homework/mainwindow.h \
 		../E_homework/enumber.h ../E_homework/main.cpp \
 		../E_homework/mainwindow.cpp \
-		../E_homework/enumber.cpp
+		../E_homework/enumber.cpp \
+		../E_homework/a_star.cpp
 QMAKE_TARGET  = E_homework
 DESTDIR       = 
 TARGET        = E_homework.app/Contents/MacOS/E_homework
@@ -646,7 +649,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../E_homework/qsrc.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../QT/5.8/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../E_homework/mainwindow.h ../E_homework/enumber.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../E_homework/main.cpp ../E_homework/mainwindow.cpp ../E_homework/enumber.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../E_homework/main.cpp ../E_homework/mainwindow.cpp ../E_homework/enumber.cpp ../E_homework/a_star.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../E_homework/mainwindow.ui ../E_homework/enumber.ui $(DISTDIR)/
 
 
@@ -706,7 +709,9 @@ moc_mainwindow.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMa
 		../../../QT/5.8/clang_64/bin/moc
 	/Users/zhangyongde/QT/5.8/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/zhangyongde/QT/5.8/clang_64/mkspecs/macx-clang -I/Users/zhangyongde/Desktop/E_number_homework/E_homework -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtWidgets.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtGui.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/zhangyongde/QT/5.8/clang_64/lib ../E_homework/mainwindow.h -o moc_mainwindow.cpp
 
-moc_enumber.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+moc_enumber.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../E_homework/enumber.h \
 		moc_predefs.h \
@@ -758,12 +763,24 @@ mainwindow.o: ../E_homework/mainwindow.cpp ../E_homework/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../E_homework/mainwindow.cpp
 
 enumber.o: ../E_homework/enumber.cpp ../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		ui_enumber.h \
 		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QImage \
-		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimage.h
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		../../../QT/5.8/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../QT/5.8/clang_64/lib/QtCore.framework/Headers/qdatetime.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o enumber.o ../E_homework/enumber.cpp
+
+a_star.o: ../E_homework/a_star.cpp ../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		ui_enumber.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o a_star.o ../E_homework/a_star.cpp
 
 qrc_qsrc.o: qrc_qsrc.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qsrc.o qrc_qsrc.cpp

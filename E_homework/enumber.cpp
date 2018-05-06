@@ -3,13 +3,6 @@
 #include <vector>
 #include <QImage>
 #include <QTime>
-#define NUM_UNIT 9
-#define UP 1
-#define LEFT 2
-#define RIGHT 3
-#define DOWN 4
-#define MAX_DEPT 25
-#define WAIT 1000
     enumber::enumber(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::enumber)
@@ -45,6 +38,38 @@ void enumber::init_pic()
     imgstack.push_back(*ice);
 
     //loadp(open[0]);
+}
+
+int enumber::find_small(int x,int desk[])
+{
+    int count=0;
+    for(int i=0;i<NUM_UNIT;i++){
+        if(desk[i] == x)
+            return count;
+        if(desk[i]<x)
+            count++;
+    }
+}
+
+bool enumber::have_slove()
+{
+    int target=0,init_status=0;
+    int pool_end[NUM_UNIT];
+    for(int i=0;i<NUM_UNIT;i++)
+        pool_end[i]=end[i]-'0';
+
+    for(int i=1;i<NUM_UNIT;i++)
+        init_status+=find_small(i,desk);
+
+    for(int i=1;i<NUM_UNIT;i++)
+        target+=find_small(i,pool_end);
+
+    if(target%2==0 && init_status%2==0)
+        return true;
+    else if(target%2 == 1 && init_status%2==1)
+        return true;
+    else
+        return false;
 }
 
 void enumber::init(){
@@ -113,6 +138,10 @@ void enumber::start()
         show_terminal.clear();
         run_width();
     }
+    else if(ui->a_star->isChecked()){
+        show_terminal.clear();
+        run_star();
+    }
     else{
         std::cout<<"no"<<std::endl;
     }
@@ -124,7 +153,10 @@ void enumber::run_deep()
     //initial all the parameters
     init_deep();
     int flag=0;
-    while((flag = move_deep()) == 0);
+    if(have_slove())
+        while((flag = move_deep()) == 0);
+    else
+        flag=-1;
     std::cout<<flag<<std::endl;
     if(flag == 1){
         node *p = open.back();
@@ -177,8 +209,15 @@ void enumber::run_width()
 {
     init();
     int flag=0;
-    while((flag=move()) == 0);
+    if(have_slove())
+        while((flag=move()) == 0);
+    else
+        flag=-1;
     std::cout<<flag<<std::endl;
+    if(flag==-1){
+        ui->textBrowser->setText(QString::fromStdString(std::string("No Answer!\n")));
+        return;
+    }
     if(flag == 2){
         ui->textBrowser->setText(QString::fromStdString(std::string("Too Large\n")));
         return;
@@ -498,15 +537,15 @@ void enumber::creat_targ(node *n)
     }
 }
 
-bool enumber::inClosed(node *n)
+node *enumber::inClosed(node *n)
 {
     for(int i=0;i<closed.size();i++){
         if(strcmp(n->targ.c_str(), closed[i]->targ.c_str()) == 0){
             check++;
-            return true;
+            return closed[i];
         }
     }
-    return false;
+    return NULL;
 }
 
 void enumber::init_deep()
@@ -822,3 +861,8 @@ int enumber::move_deep()
     return 0;
 }
 
+
+void enumber::on_textBrowser_textChanged()
+{
+    ui->textBrowser->moveCursor(QTextCursor::End);
+}

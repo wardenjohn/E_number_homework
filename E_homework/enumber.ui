@@ -297,7 +297,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButton">
+  <widget class="QRadioButton" name="a_star">
    <property name="geometry">
     <rect>
      <x>430</x>

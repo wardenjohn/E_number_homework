@@ -7,6 +7,14 @@
 #include <vector>
 #include <queue>
 
+#define NUM_UNIT 9
+#define UP 1
+#define LEFT 2
+#define RIGHT 3
+#define DOWN 4
+#define MAX_DEPT 25
+#define WAIT 1000
+
 namespace Ui {
 class enumber;
 }
@@ -16,6 +24,8 @@ typedef struct node{
     int parent;
     int dir;
     int dept;
+    int f;
+    std::vector<node *> child;
     std::string targ;
 }node;
 
@@ -31,6 +41,9 @@ public:
     void eight_number();
     void run_deep();
     void run_width();
+    void run_star();
+    bool have_slove();
+    int find_small(int x,int desk[]);
     int count=0;
     int pos_closed=0;//show the location of the top of the close table,which is count from 0
     int check=0;//to record how many is the same as one in the close table
@@ -52,11 +65,21 @@ public:
     int move();
     void init();
     void print();
-//deep search
+    //deep search
     void init_deep();
     int move_deep();
     void creat_targ(node *n);
-    bool inClosed(node *n);
+    node* inClosed(node *n);
+    int inCloseOrOpen(node *p, node *bestnode);
+    //A*
+    void init_star();
+    int move_star();
+    node* find_f();
+    int caculate_f(node *n);
+    node* inOpen(node *n);
+private slots:
+    void on_textBrowser_textChanged();
+
 };
 
 #endif // ENUMBER_H

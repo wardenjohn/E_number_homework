@@ -25,7 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    enumber.cpp
+    enumber.cpp \
+    a_star.cpp
 
 HEADERS  += mainwindow.h \
     enumber.h
