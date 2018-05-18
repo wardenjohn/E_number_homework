@@ -51,16 +51,28 @@ OBJECTS_DIR   = ./
 SOURCES       = ../E_homework/main.cpp \
 		../E_homework/mainwindow.cpp \
 		../E_homework/enumber.cpp \
-		../E_homework/a_star.cpp qrc_qsrc.cpp \
+		../E_homework/a_star.cpp \
+		../E_homework/bp.cpp \
+		../E_homework/curve.cpp \
+		../E_homework/genercurve.cpp qrc_qsrc.cpp \
 		moc_mainwindow.cpp \
-		moc_enumber.cpp
+		moc_enumber.cpp \
+		moc_bp.cpp \
+		moc_curve.cpp \
+		moc_genercurve.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		enumber.o \
 		a_star.o \
+		bp.o \
+		curve.o \
+		genercurve.o \
 		qrc_qsrc.o \
 		moc_mainwindow.o \
-		moc_enumber.o
+		moc_enumber.o \
+		moc_bp.o \
+		moc_curve.o \
+		moc_genercurve.o
 DIST          = ../../../QT/5.8/clang_64/mkspecs/features/spec_pre.prf \
 		../../../QT/5.8/clang_64/mkspecs/qdevice.pri \
 		../../../QT/5.8/clang_64/mkspecs/features/device_config.prf \
@@ -238,10 +250,16 @@ DIST          = ../../../QT/5.8/clang_64/mkspecs/features/spec_pre.prf \
 		../../../QT/5.8/clang_64/mkspecs/features/yacc.prf \
 		../../../QT/5.8/clang_64/mkspecs/features/lex.prf \
 		../E_homework/E_homework.pro ../E_homework/mainwindow.h \
-		../E_homework/enumber.h ../E_homework/main.cpp \
+		../E_homework/enumber.h \
+		../E_homework/bp.h \
+		../E_homework/curve.h \
+		../E_homework/genercurve.h ../E_homework/main.cpp \
 		../E_homework/mainwindow.cpp \
 		../E_homework/enumber.cpp \
-		../E_homework/a_star.cpp
+		../E_homework/a_star.cpp \
+		../E_homework/bp.cpp \
+		../E_homework/curve.cpp \
+		../E_homework/genercurve.cpp
 QMAKE_TARGET  = E_homework
 DESTDIR       = 
 TARGET        = E_homework.app/Contents/MacOS/E_homework
@@ -250,7 +268,7 @@ TARGET        = E_homework.app/Contents/MacOS/E_homework
 first: all
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_enumber.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_enumber.h ui_bp.h ui_curve.h ui_genercurve.h $(OBJECTS)  
 	@test -d E_homework.app/Contents/MacOS/ || mkdir -p E_homework.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -648,9 +666,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../E_homework/qsrc.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../QT/5.8/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../E_homework/mainwindow.h ../E_homework/enumber.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../E_homework/main.cpp ../E_homework/mainwindow.cpp ../E_homework/enumber.cpp ../E_homework/a_star.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../E_homework/mainwindow.ui ../E_homework/enumber.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../E_homework/mainwindow.h ../E_homework/enumber.h ../E_homework/bp.h ../E_homework/curve.h ../E_homework/genercurve.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../E_homework/main.cpp ../E_homework/mainwindow.cpp ../E_homework/enumber.cpp ../E_homework/a_star.cpp ../E_homework/bp.cpp ../E_homework/curve.cpp ../E_homework/genercurve.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../E_homework/mainwindow.ui ../E_homework/enumber.ui ../E_homework/bp.ui ../E_homework/curve.ui ../E_homework/genercurve.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -696,14 +714,22 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../QT/5.8/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -pipe -stdlib=libc++ -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.9 $(EXPORT_QMAKE_XARCH_CFLAGS) -g -std=gnu++11 -Wall -W -dM -E -o moc_predefs.h ../../../QT/5.8/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_enumber.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_enumber.cpp moc_bp.cpp moc_curve.cpp moc_genercurve.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_enumber.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_enumber.cpp moc_bp.cpp moc_curve.cpp moc_genercurve.cpp
 moc_mainwindow.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/bp.h \
+		../E_homework/mainwindow.h \
 		../E_homework/enumber.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
 		../E_homework/mainwindow.h \
 		moc_predefs.h \
 		../../../QT/5.8/clang_64/bin/moc
@@ -718,11 +744,65 @@ moc_enumber.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainW
 		../../../QT/5.8/clang_64/bin/moc
 	/Users/zhangyongde/QT/5.8/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/zhangyongde/QT/5.8/clang_64/mkspecs/macx-clang -I/Users/zhangyongde/Desktop/E_number_homework/E_homework -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtWidgets.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtGui.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/zhangyongde/QT/5.8/clang_64/lib ../E_homework/enumber.h -o moc_enumber.cpp
 
+moc_bp.cpp: ../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/bp.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		../E_homework/enumber.h \
+		../E_homework/bp.h \
+		moc_predefs.h \
+		../../../QT/5.8/clang_64/bin/moc
+	/Users/zhangyongde/QT/5.8/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/zhangyongde/QT/5.8/clang_64/mkspecs/macx-clang -I/Users/zhangyongde/Desktop/E_number_homework/E_homework -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtWidgets.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtGui.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/zhangyongde/QT/5.8/clang_64/lib ../E_homework/bp.h -o moc_bp.cpp
+
+moc_curve.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../E_homework/bp.h \
+		../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		../E_homework/curve.h \
+		moc_predefs.h \
+		../../../QT/5.8/clang_64/bin/moc
+	/Users/zhangyongde/QT/5.8/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/zhangyongde/QT/5.8/clang_64/mkspecs/macx-clang -I/Users/zhangyongde/Desktop/E_number_homework/E_homework -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtWidgets.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtGui.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/zhangyongde/QT/5.8/clang_64/lib ../E_homework/curve.h -o moc_curve.cpp
+
+moc_genercurve.cpp: ../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../E_homework/bp.h \
+		../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		../E_homework/genercurve.h \
+		moc_predefs.h \
+		../../../QT/5.8/clang_64/bin/moc
+	/Users/zhangyongde/QT/5.8/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/zhangyongde/QT/5.8/clang_64/mkspecs/macx-clang -I/Users/zhangyongde/Desktop/E_number_homework/E_homework -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtWidgets.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtGui.framework/Headers -I/Users/zhangyongde/QT/5.8/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.0.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/zhangyongde/QT/5.8/clang_64/lib ../E_homework/genercurve.h -o moc_genercurve.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_enumber.h
+compiler_uic_make_all: ui_mainwindow.h ui_enumber.h ui_bp.h ui_curve.h ui_genercurve.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_enumber.h
+	-$(DEL_FILE) ui_mainwindow.h ui_enumber.h ui_bp.h ui_curve.h ui_genercurve.h
 ui_mainwindow.h: ../E_homework/mainwindow.ui \
 		../../../QT/5.8/clang_64/bin/uic
 	/Users/zhangyongde/QT/5.8/clang_64/bin/uic ../E_homework/mainwindow.ui -o ui_mainwindow.h
@@ -730,6 +810,18 @@ ui_mainwindow.h: ../E_homework/mainwindow.ui \
 ui_enumber.h: ../E_homework/enumber.ui \
 		../../../QT/5.8/clang_64/bin/uic
 	/Users/zhangyongde/QT/5.8/clang_64/bin/uic ../E_homework/enumber.ui -o ui_enumber.h
+
+ui_bp.h: ../E_homework/bp.ui \
+		../../../QT/5.8/clang_64/bin/uic
+	/Users/zhangyongde/QT/5.8/clang_64/bin/uic ../E_homework/bp.ui -o ui_bp.h
+
+ui_curve.h: ../E_homework/curve.ui \
+		../../../QT/5.8/clang_64/bin/uic
+	/Users/zhangyongde/QT/5.8/clang_64/bin/uic ../E_homework/curve.ui -o ui_curve.h
+
+ui_genercurve.h: ../E_homework/genercurve.ui \
+		../../../QT/5.8/clang_64/bin/uic
+	/Users/zhangyongde/QT/5.8/clang_64/bin/uic ../E_homework/genercurve.ui -o ui_genercurve.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -746,9 +838,16 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 main.o: ../E_homework/main.cpp ../E_homework/mainwindow.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../E_homework/enumber.h \
+		../E_homework/bp.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		../E_homework/enumber.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../E_homework/main.cpp
@@ -756,9 +855,16 @@ main.o: ../E_homework/main.cpp ../E_homework/mainwindow.h \
 mainwindow.o: ../E_homework/mainwindow.cpp ../E_homework/mainwindow.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
-		../E_homework/enumber.h \
+		../E_homework/bp.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		../E_homework/enumber.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../E_homework/mainwindow.cpp
 
@@ -779,8 +885,270 @@ a_star.o: ../E_homework/a_star.cpp ../E_homework/enumber.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		ui_enumber.h
+		ui_enumber.h \
+		../../../QT/5.8/clang_64/lib/QtCore.framework/Headers/QTime \
+		../../../QT/5.8/clang_64/lib/QtCore.framework/Headers/qdatetime.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o a_star.o ../E_homework/a_star.cpp
+
+bp.o: ../E_homework/bp.cpp ../E_homework/bp.h \
+		../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		../E_homework/genercurve.h \
+		ui_bp.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o bp.o ../E_homework/bp.cpp
+
+curve.o: ../E_homework/curve.cpp ../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../E_homework/bp.h \
+		../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/genercurve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		ui_curve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QImage \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPaintEvent \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QtGui \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtguiversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o curve.o ../E_homework/curve.cpp
+
+genercurve.o: ../E_homework/genercurve.cpp ../E_homework/genercurve.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		../E_homework/bp.h \
+		../E_homework/mainwindow.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../E_homework/enumber.h \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../QT/5.8/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../E_homework/curve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPainter \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		ui_genercurve.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QImage \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QMouseEvent \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QPaintEvent \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/QtGui \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		../../../QT/5.8/clang_64/lib/QtGui.framework/Headers/qtguiversion.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o genercurve.o ../E_homework/genercurve.cpp
 
 qrc_qsrc.o: qrc_qsrc.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qsrc.o qrc_qsrc.cpp
@@ -790,6 +1158,15 @@ moc_mainwindow.o: moc_mainwindow.cpp
 
 moc_enumber.o: moc_enumber.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_enumber.o moc_enumber.cpp
+
+moc_bp.o: moc_bp.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_bp.o moc_bp.cpp
+
+moc_curve.o: moc_curve.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_curve.o moc_curve.cpp
+
+moc_genercurve.o: moc_genercurve.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_genercurve.o moc_genercurve.cpp
 
 ####### Install
 

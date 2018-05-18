@@ -26,13 +26,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += main.cpp\
         mainwindow.cpp \
     enumber.cpp \
-    a_star.cpp
+    a_star.cpp \
+    bp.cpp \
+    curve.cpp \
+    genercurve.cpp
 
 HEADERS  += mainwindow.h \
-    enumber.h
+    enumber.h \
+    bp.h \
+    curve.h \
+    genercurve.h
 
 FORMS    += mainwindow.ui \
-    enumber.ui
+    enumber.ui \
+    bp.ui \
+    curve.ui \
+    genercurve.ui
 
 RESOURCES += \
     qsrc.qrc

@@ -3,6 +3,7 @@
 #include <vector>
 #include <QImage>
 #include <QTime>
+#include <sys/time.h>
     enumber::enumber(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::enumber)
@@ -12,6 +13,7 @@
         connect(ui->close,SIGNAL(clicked(bool)),this,SLOT(close()));
         connect(ui->start,SIGNAL(clicked(bool)),this,SLOT(start()));
         connect(ui->load,SIGNAL(clicked(bool)),this,SLOT(loadp()));
+        flag_sample=0;
     }
 
 //initial the picture
@@ -103,20 +105,34 @@ void enumber::start()
     }
 
     int count_flag=0;//这个为产生的数所放的位置
-    flags[5]=1;flags[6]=1;flags[7]=1;
-    desk[6]=7;desk[7]=6;desk[8]=5;
-    while(count_flag<5){
-        int tem = rand()%5;
-        if(flags[tem] == 0){//it means that this number is not been created
+//    flags[5]=1;flags[6]=1;flags[7]=1;
+//    desk[6]=7;desk[7]=6;desk[8]=5;
+//    while(count_flag<5){
+//        int tem = rand()%5;
+//        if(flags[tem] == 0){//it means that this number is not been created
+//            flags[tem]=1;
+//            if(desk[count_flag] == -1){
+//                desk[count_flag]=tem;
+//                count_flag++;
+//            }
+//        }
+//        std::cout<<count_flag<<std::endl;
+//    }
+//    desk[count_flag]=8;
+
+    //random completely
+    while(count_flag<9){
+        int tem=rand()%9;
+        if(flags[tem]==0){
             flags[tem]=1;
-            if(desk[count_flag] == -1){
+            if(desk[count_flag]==-1)
+            {
                 desk[count_flag]=tem;
                 count_flag++;
             }
         }
-        std::cout<<count_flag<<std::endl;
     }
-    desk[count_flag]=8;
+
 //    desk[0]=2;desk[1]=8;desk[2]=3;desk[3]=1;desk[4]=6;desk[5]=4;desk[6]=7;desk[7]=0;desk[8]=5;
 //    //initial the first disk,which is the initial status of the running,giving the first status in randomly
 
@@ -132,15 +148,34 @@ void enumber::start()
     init_pic();//put the picture into a list
     if(ui->deep_first->isChecked()){
         show_terminal.clear();
+        open.clear();
+        closed.clear();
+        ans.clear();
         run_deep();
     }
     else if(ui->width_first->isChecked()){
         show_terminal.clear();
+        open.clear();
+        closed.clear();
+        ans.clear();
         run_width();
     }
     else if(ui->a_star->isChecked()){
         show_terminal.clear();
+        open.clear();
+        ans.clear();
+        closed.clear();
         run_star();
+    }
+    else if(ui->compare->isChecked()){
+        show_terminal.clear();
+        open.clear();
+        closed.clear();
+        ans.clear();
+        ui->deeptTime->clear();
+        ui->ATime->clear();
+        ui->widthTime->clear();
+        run_compare();
     }
     else{
         std::cout<<"no"<<std::endl;
@@ -148,16 +183,57 @@ void enumber::start()
 
 }
 
+void enumber::run_compare()
+{
+    if(flag_sample%3==0){
+        desk[0]=0;desk[1]=2;desk[2]=4;
+        desk[3]=3;desk[4]=7;desk[5]=6;
+        desk[6]=1;desk[7]=5;desk[8]=8;
+    }
+    else if(flag_sample%3==1){
+        desk[0]=8;desk[1]=5;desk[2]=0;
+        desk[3]=4;desk[4]=3;desk[5]=6;
+        desk[6]=2;desk[7]=1;desk[8]=7;
+    }else if(flag_sample%3==2){
+        desk[0]=2;desk[1]=3;desk[2]=0;
+        desk[3]=4;desk[4]=1;desk[5]=8;
+        desk[6]=7;desk[7]=6;desk[8]=5;
+    }else{
+        desk[0]=0;desk[1]=3;desk[2]=1;
+        desk[3]=4;desk[4]=2;desk[5]=8;
+        desk[6]=7;desk[7]=6;desk[8]=5;
+    }
+    run_deep();
+    ans.clear();
+    open.clear();
+    closed.clear();
+    pos_closed=0;
+    count=0;
+
+    run_width();
+    ans.clear();
+    open.clear();
+    closed.clear();
+    pos_closed=0;
+    count=0;
+
+    run_star();
+    flag_sample++;
+}
+
 void enumber::run_deep()
 {
     //initial all the parameters
     init_deep();
     int flag=0;
+    double clock_start=(double)clock();
     if(have_slove())
         while((flag = move_deep()) == 0);
     else
         flag=-1;
     std::cout<<flag<<std::endl;
+    double clock_end = (double)clock();
+    ui->deeptTime->setText(QString::number((clock_end-clock_start),10,1));
     if(flag == 1){
         node *p = open.back();
         while(p->parent!=0){
@@ -170,10 +246,16 @@ void enumber::run_deep()
     if(flag == -1){
         show_terminal += "\nNo Answer!";
         ui->textBrowser->setText(QString::fromStdString(show_terminal));
+        ui->deeptTime->setText(QString::fromStdString("Nan"));
+    }else if(flag == -2){
+        show_terminal+="the Open table is NULL , found no answer!";
+        ui->textBrowser->setText(QString::fromStdString(show_terminal));
+        ui->deeptTime->setText(QString::fromStdString("Nan"));
     }
     else if(flag == 2){
         show_terminal+="\nToo Larg";
         ui->textBrowser->setText(QString::fromStdString(show_terminal));
+
     }else{
         for(int i=ans.size()-1;i>=0;i--){
             for(int j=0;j<NUM_UNIT;j++){
@@ -209,14 +291,23 @@ void enumber::run_width()
 {
     init();
     int flag=0;
+    double clock_start = (double)clock();
     if(have_slove())
         while((flag=move()) == 0);
     else
         flag=-1;
     std::cout<<flag<<std::endl;
+    double clock_end = (double)clock();
+    ui->widthTime->setText(QString::number((clock_end-clock_start),10,1));
     if(flag==-1){
         ui->textBrowser->setText(QString::fromStdString(std::string("No Answer!\n")));
+        ui->widthTime->setText(QString::fromStdString("Nan"));
         return;
+    }
+    if(flag == -1){
+        ui->textBrowser->setText(QString::fromStdString(std::string("Open Table is null , no answer")));
+        ui->widthTime->setText(QString::fromStdString("Nan"));
+        return ;
     }
     if(flag == 2){
         ui->textBrowser->setText(QString::fromStdString(std::string("Too Large\n")));
@@ -558,15 +649,7 @@ void enumber::init_deep()
     check=0;
     show_terminal.clear();
     node *first = new node();
-//    first->disk[0][0] = 1;
-//    first->disk[0][1] = 2;
-//    first->disk[0][2] = 3;
-//    first->disk[1][0] = 7;
-//    first->disk[1][1] = 8;
-//    first->disk[1][2] = 4;
-//    first->disk[2][0] = 6;
-//    first->disk[2][1] = 5;
-//    first->disk[2][2] = 0;
+
     for(int i=0;i<NUM_UNIT;i++)
         first->disk[i/3][i%3] = desk[i];
 
@@ -588,7 +671,7 @@ int enumber::move_deep()
 {
     if(open.empty()){
         std::cout<<"open is null"<<std::endl;
-        return -1;
+        return -2;
     }//If open list is null
     node *now = new node();
     for(int i=0;i<NUM_UNIT;i++)

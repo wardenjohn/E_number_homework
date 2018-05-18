@@ -292,6 +292,7 @@ void enumber::run_star()
     ui->textBrowser->setText(QString::fromStdString(""));
     init_star();
     int flag=0;
+    double clock_start=(double)clock();
     if(have_slove()){
         std::cout<<"have slove"<<std::endl;
         while((flag=move_star()) == 0){
@@ -300,6 +301,8 @@ void enumber::run_star()
     }
     else
         flag=-1;
+    double clock_end = (double)clock();
+    ui->ATime->setText(QString::number((clock_end-clock_start),10,1));
     if(flag==1){
         std::cout<<"OK !!!!!"<<std::endl;
         node *p;
@@ -326,8 +329,17 @@ void enumber::run_star()
                 QCoreApplication::processEvents();
         }
     }
-    if(flag==-1 || flag == -2)
+    if(flag==-1 || flag == -2){
         ui->textBrowser->setText(QString::fromStdString("NO Answer"));
+        ui->ATime->setText(QString::fromStdString("Nan"));
+    }
     else
         std::cout<<"end all"<<std::endl;
+
+    ans.clear();
+    open.clear();
+    closed.clear();
+    pos_closed=0;
+    count=0;
+
 }

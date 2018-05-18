@@ -42,6 +42,7 @@ public:
     void run_deep();
     void run_width();
     void run_star();
+    void run_compare();
     bool have_slove();
     int find_small(int x,int desk[]);
     int count=0;
@@ -56,6 +57,7 @@ private:
     int desk[9]={-1};
     std::string show_terminal;
     std::string end = "123804765";
+    int flag_sample;
 public slots:
     void start();
     void loadp(node *n);

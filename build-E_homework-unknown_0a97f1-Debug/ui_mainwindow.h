@@ -30,9 +30,9 @@ public:
     QWidget *centralWidget;
     QLabel *title;
     QPushButton *eight_number;
-    QPushButton *traveler;
     QLabel *declear;
     QLabel *Unit;
+    QPushButton *Neonet;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -49,16 +49,16 @@ public:
         title->setGeometry(QRect(40, 30, 171, 21));
         eight_number = new QPushButton(centralWidget);
         eight_number->setObjectName(QStringLiteral("eight_number"));
-        eight_number->setGeometry(QRect(60, 80, 113, 32));
-        traveler = new QPushButton(centralWidget);
-        traveler->setObjectName(QStringLiteral("traveler"));
-        traveler->setGeometry(QRect(220, 80, 113, 32));
+        eight_number->setGeometry(QRect(120, 80, 113, 32));
         declear = new QLabel(centralWidget);
         declear->setObjectName(QStringLiteral("declear"));
         declear->setGeometry(QRect(170, 140, 181, 20));
         Unit = new QLabel(centralWidget);
         Unit->setObjectName(QStringLiteral("Unit"));
         Unit->setGeometry(QRect(130, 170, 281, 16));
+        Neonet = new QPushButton(centralWidget);
+        Neonet->setObjectName(QStringLiteral("Neonet"));
+        Neonet->setGeometry(QRect(290, 80, 113, 32));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -81,9 +81,9 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", Q_NULLPTR));
         title->setText(QApplication::translate("MainWindow", "\350\257\267\351\200\211\346\213\251\351\234\200\350\246\201\350\247\243\345\206\263\347\232\204\351\227\256\351\242\230\357\274\232", Q_NULLPTR));
         eight_number->setText(QApplication::translate("MainWindow", "\345\205\253\346\225\260\347\240\201\351\227\256\351\242\230", Q_NULLPTR));
-        traveler->setText(QApplication::translate("MainWindow", "\346\227\205\350\241\214\345\256\266\351\227\256\351\242\230", Q_NULLPTR));
         declear->setText(QApplication::translate("MainWindow", "CS1505 Wraden John \302\2512018 ", Q_NULLPTR));
         Unit->setText(QApplication::translate("MainWindow", "Beijing University Of Chemicial Technology", Q_NULLPTR));
+        Neonet->setText(QApplication::translate("MainWindow", "\347\245\236\347\273\217\347\275\221\347\273\234", Q_NULLPTR));
     } // retranslateUi
 
 };

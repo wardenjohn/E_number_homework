@@ -16,6 +16,7 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QTextBrowser>
@@ -46,6 +47,13 @@ public:
     QLabel *label;
     QTextBrowser *textBrowser;
     QRadioButton *a_star;
+    QRadioButton *compare;
+    QLabel *label_6;
+    QLineEdit *widthTime;
+    QLabel *label_7;
+    QLabel *label_8;
+    QLineEdit *deeptTime;
+    QLineEdit *ATime;
 
     void setupUi(QDialog *enumber)
     {
@@ -124,6 +132,27 @@ public:
         a_star = new QRadioButton(enumber);
         a_star->setObjectName(QStringLiteral("a_star"));
         a_star->setGeometry(QRect(430, 210, 100, 20));
+        compare = new QRadioButton(enumber);
+        compare->setObjectName(QStringLiteral("compare"));
+        compare->setGeometry(QRect(430, 240, 100, 20));
+        label_6 = new QLabel(enumber);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setGeometry(QRect(430, 270, 91, 16));
+        widthTime = new QLineEdit(enumber);
+        widthTime->setObjectName(QStringLiteral("widthTime"));
+        widthTime->setGeometry(QRect(430, 290, 101, 21));
+        label_7 = new QLabel(enumber);
+        label_7->setObjectName(QStringLiteral("label_7"));
+        label_7->setGeometry(QRect(430, 320, 91, 16));
+        label_8 = new QLabel(enumber);
+        label_8->setObjectName(QStringLiteral("label_8"));
+        label_8->setGeometry(QRect(430, 370, 81, 16));
+        deeptTime = new QLineEdit(enumber);
+        deeptTime->setObjectName(QStringLiteral("deeptTime"));
+        deeptTime->setGeometry(QRect(430, 340, 101, 21));
+        ATime = new QLineEdit(enumber);
+        ATime->setObjectName(QStringLiteral("ATime"));
+        ATime->setGeometry(QRect(430, 390, 101, 21));
 
         retranslateUi(enumber);
 
@@ -153,6 +182,10 @@ public:
         width_first->setText(QApplication::translate("enumber", "\345\271\277\345\272\246\344\274\230\345\205\210\346\220\234\347\264\242", Q_NULLPTR));
         label->setText(QApplication::translate("enumber", "\350\257\246\347\273\206\350\276\223\345\207\272\357\274\232", Q_NULLPTR));
         a_star->setText(QApplication::translate("enumber", "A*\347\256\227\346\263\225", Q_NULLPTR));
+        compare->setText(QApplication::translate("enumber", "\345\257\271\346\257\224\350\277\220\350\241\214", Q_NULLPTR));
+        label_6->setText(QApplication::translate("enumber", "\345\256\275\345\272\246\346\227\266\351\227\264", Q_NULLPTR));
+        label_7->setText(QApplication::translate("enumber", "\346\267\261\345\272\246\346\227\266\351\227\264", Q_NULLPTR));
+        label_8->setText(QApplication::translate("enumber", "A*\346\227\266\351\227\264", Q_NULLPTR));
     } // retranslateUi
 
 };

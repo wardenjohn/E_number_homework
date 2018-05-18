@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "bp.h"
 #include "enumber.h"
 
 namespace Ui {
@@ -22,6 +23,7 @@ private:
 public slots:
     void enter_eigth_number();
     void enter_traveler();
+    void enter_neonet();
 };
 
 #endif // MAINWINDOW_H
