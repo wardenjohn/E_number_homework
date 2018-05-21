@@ -1,9 +1,11 @@
 #include "enumber.h"
 #include "ui_enumber.h"
+#include "enumbercurve.h"
 #include <vector>
 #include <QImage>
 #include <QTime>
 #include <sys/time.h>
+
     enumber::enumber(QWidget *parent) :
         QDialog(parent),
         ui(new Ui::enumber)
@@ -12,7 +14,7 @@
         setWindowTitle("小小八数码");
         connect(ui->close,SIGNAL(clicked(bool)),this,SLOT(close()));
         connect(ui->start,SIGNAL(clicked(bool)),this,SLOT(start()));
-        connect(ui->load,SIGNAL(clicked(bool)),this,SLOT(loadp()));
+        connect(ui->pic,SIGNAL(clicked(bool)),this,SLOT(eight_number()));
         flag_sample=0;
     }
 
@@ -105,33 +107,33 @@ void enumber::start()
     }
 
     int count_flag=0;//这个为产生的数所放的位置
-//    flags[5]=1;flags[6]=1;flags[7]=1;
-//    desk[6]=7;desk[7]=6;desk[8]=5;
-//    while(count_flag<5){
-//        int tem = rand()%5;
-//        if(flags[tem] == 0){//it means that this number is not been created
-//            flags[tem]=1;
-//            if(desk[count_flag] == -1){
-//                desk[count_flag]=tem;
-//                count_flag++;
-//            }
-//        }
-//        std::cout<<count_flag<<std::endl;
-//    }
-//    desk[count_flag]=8;
-
-    //random completely
-    while(count_flag<9){
-        int tem=rand()%9;
-        if(flags[tem]==0){
+    flags[5]=1;flags[6]=1;flags[7]=1;
+    desk[6]=7;desk[7]=6;desk[8]=5;
+    while(count_flag<5){
+        int tem = rand()%5;
+        if(flags[tem] == 0){//it means that this number is not been created
             flags[tem]=1;
-            if(desk[count_flag]==-1)
-            {
+            if(desk[count_flag] == -1){
                 desk[count_flag]=tem;
                 count_flag++;
             }
         }
+        std::cout<<count_flag<<std::endl;
     }
+    desk[count_flag]=8;
+
+    //random completely
+//    while(count_flag<9){
+//        int tem=rand()%9;
+//        if(flags[tem]==0){
+//            flags[tem]=1;
+//            if(desk[count_flag]==-1)
+//            {
+//                desk[count_flag]=tem;
+//                count_flag++;
+//            }
+//        }
+//    }
 
 //    desk[0]=2;desk[1]=8;desk[2]=3;desk[3]=1;desk[4]=6;desk[5]=4;desk[6]=7;desk[7]=0;desk[8]=5;
 //    //initial the first disk,which is the initial status of the running,giving the first status in randomly
@@ -203,6 +205,7 @@ void enumber::run_compare()
         desk[3]=4;desk[4]=2;desk[5]=8;
         desk[6]=7;desk[7]=6;desk[8]=5;
     }
+
     run_deep();
     ans.clear();
     open.clear();
@@ -234,6 +237,8 @@ void enumber::run_deep()
     std::cout<<flag<<std::endl;
     double clock_end = (double)clock();
     ui->deeptTime->setText(QString::number((clock_end-clock_start),10,1));
+    timed.push_back(clock_end-clock_start);//input the vec time
+
     if(flag == 1){
         node *p = open.back();
         while(p->parent!=0){
@@ -299,6 +304,8 @@ void enumber::run_width()
     std::cout<<flag<<std::endl;
     double clock_end = (double)clock();
     ui->widthTime->setText(QString::number((clock_end-clock_start),10,1));
+    timew.push_back(clock_end-clock_start);
+
     if(flag==-1){
         ui->textBrowser->setText(QString::fromStdString(std::string("No Answer!\n")));
         ui->widthTime->setText(QString::fromStdString("Nan"));
@@ -356,13 +363,8 @@ void enumber::run_width()
 void enumber::eight_number()
 {
     //this run number which its aim is to get a disk=[1,2,3,8,0,4,7,6,5]
-    QTime t;
-    while(true){
-        t.start();
-        //loadp();
-        while(t.elapsed()<1000)
-            QCoreApplication::processEvents();
-    }
+    enumbercurve *ec = new enumbercurve(timeA,timew,timed);
+    ec->show();
 }
 
 //using a count to change picture,this is a loading picture function
@@ -379,6 +381,7 @@ void enumber::loadp(node *n)
     ui->num20->setPixmap(QPixmap::fromImage(imgstack[n->disk[2][0]]).scaled(width,height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
     ui->num21->setPixmap(QPixmap::fromImage(imgstack[n->disk[2][1]]).scaled(width,height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
     ui->num22->setPixmap(QPixmap::fromImage(imgstack[n->disk[2][2]]).scaled(width,height,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+
 }
 
 enumber::~enumber()

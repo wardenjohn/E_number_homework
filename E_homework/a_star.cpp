@@ -303,6 +303,8 @@ void enumber::run_star()
         flag=-1;
     double clock_end = (double)clock();
     ui->ATime->setText(QString::number((clock_end-clock_start),10,1));
+    timeA.push_back((clock_end-clock_start));
+
     if(flag==1){
         std::cout<<"OK !!!!!"<<std::endl;
         node *p;

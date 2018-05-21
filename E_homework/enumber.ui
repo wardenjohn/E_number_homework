@@ -55,7 +55,7 @@
     <pixmap resource="qsrc.qrc">:/image/1</pixmap>
    </property>
   </widget>
-  <widget class="QPushButton" name="load">
+  <widget class="QPushButton" name="pic">
    <property name="geometry">
     <rect>
      <x>420</x>

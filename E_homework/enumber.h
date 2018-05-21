@@ -38,7 +38,6 @@ public:
     explicit enumber(QWidget *parent = 0);
     ~enumber();
     void init_pic();
-    void eight_number();
     void run_deep();
     void run_width();
     void run_star();
@@ -48,6 +47,9 @@ public:
     int count=0;
     int pos_closed=0;//show the location of the top of the close table,which is count from 0
     int check=0;//to record how many is the same as one in the close table
+    std::vector<float> timeA;
+    std::vector<float> timew;
+    std::vector<float> timed;
 private:
     Ui::enumber *ui;
     std::vector<QImage> imgstack;
@@ -61,6 +63,7 @@ private:
 public slots:
     void start();
     void loadp(node *n);
+    void eight_number();
 public:
     bool isEnd(node *n);
     int findZero(node *n);

@@ -29,7 +29,7 @@ public:
     QPushButton *close;
     QPushButton *start;
     QLabel *num00;
-    QPushButton *load;
+    QPushButton *pic;
     QLabel *num01;
     QLabel *num02;
     QLabel *label_2;
@@ -70,9 +70,9 @@ public:
         num00->setObjectName(QStringLiteral("num00"));
         num00->setGeometry(QRect(80, 90, 71, 81));
         num00->setPixmap(QPixmap(QString::fromUtf8(":/image/1")));
-        load = new QPushButton(enumber);
-        load->setObjectName(QStringLiteral("load"));
-        load->setGeometry(QRect(420, 100, 113, 32));
+        pic = new QPushButton(enumber);
+        pic->setObjectName(QStringLiteral("pic"));
+        pic->setGeometry(QRect(420, 100, 113, 32));
         num01 = new QLabel(enumber);
         num01->setObjectName(QStringLiteral("num01"));
         num01->setGeometry(QRect(160, 90, 71, 81));
@@ -165,7 +165,7 @@ public:
         close->setText(QApplication::translate("enumber", "\345\205\263\351\227\255\347\252\227\345\217\243", Q_NULLPTR));
         start->setText(QApplication::translate("enumber", "\345\274\200\345\247\213", Q_NULLPTR));
         num00->setText(QString());
-        load->setText(QApplication::translate("enumber", "\345\212\240\350\275\275", Q_NULLPTR));
+        pic->setText(QApplication::translate("enumber", "\345\212\240\350\275\275", Q_NULLPTR));
         num01->setText(QString());
         num02->setText(QString());
         label_2->setText(QApplication::translate("enumber", "--------------------------------------------------------------------", Q_NULLPTR));

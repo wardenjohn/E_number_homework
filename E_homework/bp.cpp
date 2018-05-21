@@ -10,7 +10,7 @@
 #include <cmath>
 #include <fstream>
 #define LAY_NUM 3
-#define LOOP 300
+#define LOOP 100
 
 static std::vector<float> errorStack;
 

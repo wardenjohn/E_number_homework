@@ -29,19 +29,22 @@ SOURCES += main.cpp\
     a_star.cpp \
     bp.cpp \
     curve.cpp \
-    genercurve.cpp
+    genercurve.cpp \
+    enumbercurve.cpp
 
 HEADERS  += mainwindow.h \
     enumber.h \
     bp.h \
     curve.h \
-    genercurve.h
+    genercurve.h \
+    enumbercurve.h
 
 FORMS    += mainwindow.ui \
     enumber.ui \
     bp.ui \
     curve.ui \
-    genercurve.ui
+    genercurve.ui \
+    enumbercurve.ui
 
 RESOURCES += \
     qsrc.qrc

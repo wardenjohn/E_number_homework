@@ -26,7 +26,7 @@ public:
     {
         if (curve->objectName().isEmpty())
             curve->setObjectName(QStringLiteral("curve"));
-        curve->resize(618, 500);
+        curve->resize(618, 796);
 
         retranslateUi(curve);
 
